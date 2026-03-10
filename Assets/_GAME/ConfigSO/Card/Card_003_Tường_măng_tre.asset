@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1659f2b3dd5e91a49ad7cf0e6539176d, type: 3}
+  m_Name: "Card_003_T\u01B0\u1EDDng_m\u0103ng_tre"
+  m_EditorClassIdentifier: 
+  id: 2
+  type: 0
+  target: 0000000001000000
+  element: 1
+  size: {x: 2, y: 5}
+  mana: 0
+  name: "T\u01B0\u1EDDng m\u0103ng tre"
+  description: 
+  icon: {fileID: 0}
+  prefab: {fileID: 0}

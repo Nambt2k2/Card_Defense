@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1659f2b3dd5e91a49ad7cf0e6539176d, type: 3}
-  m_Name: "002_Card_N\u1ECF_th\u1EA7n"
+  m_Name: "Card_016_\u0110\u1EA5t_m\u1EB9_b\u1EA3o_v\u1EC7"
   m_EditorClassIdentifier: 
-  id: 1
-  type: 0
-  target: 000000000100000002000000
-  element: 0
-  size: {x: 2, y: 2}
+  id: 15
+  type: 2
+  target: 00000000
+  element: 4
+  size: {x: 0, y: 0}
   mana: 0
-  name: "N\u1ECF th\u1EA7n"
+  name: "\u0110\u1EA5t m\u1EB9 b\u1EA3o v\u1EC7"
   description: 
   icon: {fileID: 0}
-  iconType: {fileID: 0}
+  prefab: {fileID: 0}

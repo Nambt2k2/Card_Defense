@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1659f2b3dd5e91a49ad7cf0e6539176d, type: 3}
-  m_Name: "001_Card_Nh\xE0_\u0111\u1EF1c"
+  m_Name: "Card_001_Nh\xE0_\u0111\u1EF1c"
   m_EditorClassIdentifier: 
   id: 0
   type: 0
@@ -21,4 +21,4 @@ MonoBehaviour:
   name: "Nh\xE0 \u0111\u1EF1c"
   description: 
   icon: {fileID: 0}
-  iconType: {fileID: 0}
+  prefab: {fileID: 0}
