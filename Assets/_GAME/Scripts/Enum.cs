@@ -30,7 +30,6 @@ public enum E_targetCard {
     Ground, Air, Water,
 }
 #endregion
-
 #region ENEMY
 public enum E_idEnemy {
     Chuột_tinh,
@@ -66,12 +65,6 @@ public enum E_typeTaget_EnemyNotAtk {
     None, Structure,
 }
 #endregion
-
-[System.Serializable]
-public struct S_baseStats {
-    public E_idBaseStats id;
-    public float value;
-}
 
 public enum E_idBaseStats {
     Hp, Atk, SpeedMove, SpeedAtk, RangeAtk

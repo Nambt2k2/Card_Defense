@@ -17,8 +17,8 @@ MonoBehaviour:
   target: 000000000100000002000000
   element: 3
   size: {x: 3, y: 3}
-  mana: 0
+  mana: 3
   name: "L\xF2 nung g\u1ED1m"
   description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 6905921480998202033, guid: f94aca1aff70ac547ada96541a28f1a5, type: 3}
+  prefab: {fileID: 1763420494337364050, guid: 33ba598aee0e31242904a6ba7928bc1f, type: 3}

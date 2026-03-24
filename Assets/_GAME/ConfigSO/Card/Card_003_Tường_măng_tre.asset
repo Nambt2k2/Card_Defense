@@ -16,9 +16,9 @@ MonoBehaviour:
   type: 0
   target: 0000000001000000
   element: 1
-  size: {x: 2, y: 5}
-  mana: 0
+  size: {x: 3, y: 2}
+  mana: 1
   name: "T\u01B0\u1EDDng m\u0103ng tre"
   description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: -4777607009240715934, guid: 99c1bfdac2678a84a937ce4a9e14b2b9, type: 3}
+  prefab: {fileID: 789734363683725102, guid: ba181cb868a71be4eaa92930c5277066, type: 3}
