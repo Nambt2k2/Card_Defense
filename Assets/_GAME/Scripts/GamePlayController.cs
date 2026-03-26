@@ -1,18 +1,27 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GamePlayController : MonoBehaviour {
+    public void OnClickReset() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     #region MAINFLOW
+    public RectTransform canvasWorld;
     void Awake() {
         touchPositionAction = playerInput.actions["Position"];
         touchPressAction = playerInput.actions["Press"];
-        offsetCheckToTouch = new Vector3(0, sizeCell, 0);
-        offsetCheckToTouch2n = new Vector3(sizeCell / 2, sizeCell, 0);
+        offsetCheckToTouch = new Vector3(0, sizeCell * 3, 0);
+        offsetCheckToTouch2n = new Vector3(sizeCell / 2, sizeCell * 3, 0);
         InitCard();
         InitMana();
+        if (Screen.height / Screen.width >= 2) {
+            Camera.main.orthographicSize = Screen.height / 2;
+        }
     }
 
     void Update() {
@@ -67,9 +76,117 @@ public class GamePlayController : MonoBehaviour {
             }
     }
 
-    bool CanPlaceCell(Vector3Int cellMin) {
-        return true;
+    bool hasLeft, hasRight;
+    bool CalcIndexCanPlaces(Vector3Int indexCellMin) {
+        Vector2Int size = curDataCardConfigSOs[idCardSelected].size;
+        HashSet<Vector2Int> pathWallBlocks = new HashSet<Vector2Int>();
+        // bound left
+        if (indexCellMin.x > 0) {
+            for (int i = 0; i < size.y; i++)
+                if (gridCell.rows[indexCellMin.y + i].cols[indexCellMin.x - 1].isFull)
+                    pathWallBlocks.Add(new Vector2Int(indexCellMin.x - 1, indexCellMin.y + i));
+            // bound left down
+            if (indexCellMin.y > 0 && gridCell.rows[indexCellMin.y - 1].cols[indexCellMin.x - 1].isFull)
+                pathWallBlocks.Add(new Vector2Int(indexCellMin.x - 1, indexCellMin.y - 1));
+        }
+        // bound down
+        if (indexCellMin.y > 0) {
+            for (int i = 0; i < size.x; i++)
+                if (gridCell.rows[indexCellMin.y - 1].cols[indexCellMin.x + i].isFull)
+                    pathWallBlocks.Add(new Vector2Int(indexCellMin.x + i, indexCellMin.y - 1));
+            //bound down right
+            if (indexCellMin.x < this.size.x - size.x && gridCell.rows[indexCellMin.y - 1].cols[indexCellMin.x + size.x].isFull)
+                pathWallBlocks.Add(new Vector2Int(indexCellMin.x + size.x, indexCellMin.y - 1));
+        }
+        // bound right
+        if (indexCellMin.x < this.size.x - size.x) {
+            for (int i = 0; i < size.y; i++)
+                if (gridCell.rows[indexCellMin.y + i].cols[indexCellMin.x + size.x].isFull)
+                    pathWallBlocks.Add(new Vector2Int(indexCellMin.x + size.x, indexCellMin.y + i));
+            //bound right up
+            if (indexCellMin.y < this.size.y - size.y && gridCell.rows[indexCellMin.y + size.y].cols[indexCellMin.x + size.x].isFull)
+                pathWallBlocks.Add(new Vector2Int(indexCellMin.x + size.x, indexCellMin.y + size.y));
+        }
+        // bound up
+        if (indexCellMin.y < this.size.y - size.y) {
+            for (int i = 0; i < size.x; i++)
+                if (gridCell.rows[indexCellMin.y + size.y].cols[indexCellMin.x + i].isFull)
+                    pathWallBlocks.Add(new Vector2Int(indexCellMin.x + i, indexCellMin.y + size.y));
+            // bound up left
+            if (indexCellMin.x > 0 && gridCell.rows[indexCellMin.y + size.y].cols[indexCellMin.x - 1].isFull)
+                pathWallBlocks.Add(new Vector2Int(indexCellMin.x - 1, indexCellMin.y + size.y));
+        }
+        if (pathWallBlocks.Count == 0)
+            return true;
+        else {
+            hasLeft = hasRight = false;
+            for (int i = 0; i < indexCellChecks.Count; i++)
+                pathWallBlocks.Add(new Vector2Int(indexCellChecks[i].x, indexCellChecks[i].y));
+            foreach (Vector2Int block in pathWallBlocks) {
+                if (block.x == 0)
+                    hasLeft = true;
+                else if (block.x == this.size.x - 1)
+                    hasRight = true;
+            }
+            List<Vector2Int> pathWallBlocksTemp = pathWallBlocks.ToList();
+            foreach (Vector2Int block in pathWallBlocksTemp) {
+                CheckCellPath8Dir(block, ref pathWallBlocks);
+                if (hasLeft && hasRight)
+                    return false;
+            }
+            return !hasLeft || !hasRight;
+        }
     }
+
+    void CheckCellPath8Dir(Vector2Int cell, ref HashSet<Vector2Int> pathWallBlocks) {
+        if (hasLeft && hasRight)
+            return;
+        List<Vector2Int> cells = new List<Vector2Int>();
+        // bound left
+        if (cell.x > 0) {
+            cells.Add(new Vector2Int(cell.x - 1, cell.y));
+            // bound left down
+            if (cell.y > 0)
+                cells.Add(new Vector2Int(cell.x - 1, cell.y - 1));
+        }
+        // bound down
+        if (cell.y > 0) {
+            cells.Add(new Vector2Int(cell.x, cell.y - 1));
+            //bound down right
+            if (cell.x < size.x - 1)
+                cells.Add(new Vector2Int(cell.x + 1, cell.y - 1));
+        }
+        // bound right
+        if (cell.x < size.x - 1) {
+            cells.Add(new Vector2Int(cell.x + 1, cell.y));
+            //bound right up
+            if (cell.y < size.y - 1)
+                cells.Add(new Vector2Int(cell.x + 1, cell.y + 1));
+        }
+        // bound up
+        if (cell.y < size.y - 1) {
+            cells.Add(new Vector2Int(cell.x, cell.y + 1));
+            // bound up left
+            if (cell.x > 0)
+                cells.Add(new Vector2Int(cell.x - 1, cell.y + 1));
+        }
+        for (int i = 0; i < cells.Count; i++)
+            if (!pathWallBlocks.Contains(cells[i]))
+                if (gridCell.rows[cells[i].y].cols[cells[i].x].isFull) {
+                    pathWallBlocks.Add(cells[i]);
+                    if (cells[i].x == 0) {
+                        hasLeft = true;
+                        if (hasLeft && hasRight)
+                            return;
+                    } else if (cells[i].x == size.x - 1) {
+                        hasRight = true;
+                        if (hasLeft && hasRight)
+                            return;
+                    }
+                    CheckCellPath8Dir(cells[i], ref pathWallBlocks);
+                }
+    }
+
     #endregion
     #region CARD
     [Header("     --- CARD ---")]
@@ -118,7 +235,7 @@ public class GamePlayController : MonoBehaviour {
                     c = colorCellDeactive;
                 }
         if (canDropCard) {
-            canDropCard = CanPlaceCell(indexCellChecks[0]);
+            canDropCard = CalcIndexCanPlaces(indexCellChecks[0]);
             if (!canDropCard)
                 c = colorCellDeactive;
         }
@@ -169,7 +286,7 @@ public class GamePlayController : MonoBehaviour {
             return;
         idCardSelected = index;
         curCards[idCardSelected].AnimSelect();
-        indexCellInGridCur = -Vector3Int.one;
+        indexCellInGridCur = -Vector3Int.one;       
     }
     #endregion
     #region MANA
