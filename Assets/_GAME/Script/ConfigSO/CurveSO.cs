@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Curve", menuName = "DataConfigSO/CurveSO")]
 public class CurveSO : ScriptableObject {
     public AnimationCurve OutBack, OutQuad;
 
-    public static IEnumerator IEScale(Transform transform, Vector3 targerScale, float duration, AnimationCurve curve) {
+    public static IEnumerator IEScale(Transform transform, Vector3 targerScale, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
         Vector3 startScale = transform.localScale;
         while (elapsed < duration) {
@@ -16,9 +17,10 @@ public class CurveSO : ScriptableObject {
             yield return null;
         }
         transform.localScale = targerScale;
+        onComplete?.Invoke();
     }
 
-     public static IEnumerator IELocalRotate(Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve) {
+     public static IEnumerator IELocalRotate(Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
         while (elapsed < duration) {
             elapsed += Time.deltaTime;
@@ -27,6 +29,7 @@ public class CurveSO : ScriptableObject {
             yield return null;
         }
         transform.localRotation = Quaternion.Euler(targetRotate);
+        onComplete?.Invoke();
     }
 
     public static IEnumerator IELocalMove(MonoBehaviour script, Transform transform, Vector3 targetPosition, float duration, AnimationCurve curve, Action onComplete = null) {
@@ -65,5 +68,21 @@ public class CurveSO : ScriptableObject {
         }
         transform.localRotation = Quaternion.Euler(targetRotate);
         script.StartCoroutine(IELocalRotateLoop(script, transform, targetRotate, startRotate, duration, curve));
+    }
+
+    public static IEnumerator IEFadeColorImage(Image img, float startAlpha, float endAlpha, float duration, AnimationCurve curve, Action onComplete = null) {
+        float elapsed = 0f;
+        Color startColor = img.color;
+        startColor.a = startAlpha;
+        img.color = startColor; 
+        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, endAlpha);
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            img.color = Color.Lerp(startColor, targetColor, curve.Evaluate(t));
+            yield return null;
+        }
+        img.color = targetColor;
+        onComplete?.Invoke();
     }
 }

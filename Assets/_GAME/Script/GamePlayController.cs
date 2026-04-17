@@ -35,8 +35,9 @@ public class GamePlayController : MonoBehaviour {
         InitHp();
         InitMana();
         camMain = Camera.main;
-        if (Screen.height / Screen.width >= 2)
-            camMain.orthographicSize = Screen.height / 2;
+        if (Screen.height / Screen.width >= (16f / 9)) {
+            camMain.fieldOfView = Camera.HorizontalToVerticalFieldOfView(25, (float)Screen.width / Screen.height);
+        }
     }
 
     void Update() {
@@ -225,6 +226,7 @@ public class GamePlayController : MonoBehaviour {
     public Transform towerParent;
     public int idCardSelected;
     bool canDropCard;
+    public Color colorCardOutlineSelected;
     public Card cardPrefab;
     public Card[] curCards;
     public Transform[] slotCards;
@@ -320,7 +322,7 @@ public class GamePlayController : MonoBehaviour {
     }
 
     void RotateCardFollowDrag(Vector3 posTouch) {
-        curCards[idCardSelected].transform.localRotation = Quaternion.Euler(Remap(posTouch.y - curCards[idCardSelected].transform.position.y, 0, 500, -1f, 1f), Remap(posTouch.x - curCards[idCardSelected].transform.position.x, -500, 500, 10f, -10f), Remap(posTouch.x - curCards[idCardSelected].transform.position.x, -500, 500, -1.2f, 1.2f));
+        curCards[idCardSelected].transform.localRotation = Quaternion.Euler(Mathf.Clamp(Remap(posTouch.y - curCards[idCardSelected].transform.position.y, 0, 500, -1f, 1f), -1f, 1f), Mathf.Clamp(Remap(posTouch.x - curCards[idCardSelected].transform.position.x, -500, 500, 10f, -10f), -10f, 10f), Mathf.Clamp(Remap(posTouch.x - curCards[idCardSelected].transform.position.x, -500, 500, -1.2f, 1.2f), -1.2f, 1.2f));
     }
 
     public static float Remap(float value, float fromMin, float fromMax, float toMin, float toMax) {
@@ -358,7 +360,7 @@ public class GamePlayController : MonoBehaviour {
             curDataCardConfigSOs[idCardSelected] = RandomDataCard();
             curCards[idCardSelected].InitUI(GetBgElementCard(curDataCardConfigSOs[idCardSelected].element), curDataCardConfigSOs[idCardSelected].icon, curDataCardConfigSOs[idCardSelected].name, curDataCardConfigSOs[idCardSelected].mana, CheckMana(curDataCardConfigSOs[idCardSelected].mana));
             int idCardTemp = idCardSelected;
-            StartCoroutine(CurveSO.IELocalMove(this, curCards[idCardSelected].transform, Vector3.zero, .3f, curveSO.OutQuad, () => eventTriggerslotCards[idCardTemp].enabled = true));
+            StartCoroutine(CurveSO.IELocalMove(this, curCards[idCardSelected].transform, Vector3.zero, .3f + (curCards.Length - idCardSelected - 2) * 0.03f, curveSO.OutQuad, () => eventTriggerslotCards[idCardTemp].enabled = true));
             curCards[idCardSelected].AnimSpawmNew(curveSO.OutBack, curveSO.OutQuad, slotCards[idCardSelected].position - storageCard.position, (curCards.Length - idCardSelected - 2) * 0.03f);
             slotCards[idCardSelected].SetSiblingIndex(slotCards.Length - 1);
         } else {
@@ -403,7 +405,7 @@ public class GamePlayController : MonoBehaviour {
             if (i < idCardSelected)
                 curCards[i].Move(offsetMoveCardSelect, curveSO.OutBack);
             else if (i == idCardSelected) {
-                curCards[idCardSelected].AnimSelect(poscardSelect, curveSO.OutBack);
+                curCards[idCardSelected].AnimSelect(poscardSelect, curveSO.OutBack, colorCardOutlineSelected);
                 ShowUIManaUseCard();
                 isSelectedCard = true;
             } else
@@ -422,7 +424,7 @@ public class GamePlayController : MonoBehaviour {
 
     void UpdateUICardFollowMana() {
         for (int i = 0; i < curCards.Length; i++)
-            curCards[i].SetTempImage(CheckMana(curDataCardConfigSOs[i].mana));
+            curCards[i].SetTempImage(CheckMana(curDataCardConfigSOs[i].mana), curveSO.OutQuad, this);
     }
     #endregion
     #region HP
