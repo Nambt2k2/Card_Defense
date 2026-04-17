@@ -1,0 +1,18 @@
+root = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# Dấu ngoặc mở nằm cùng dòng (K&R style)
+csharp_new_line_before_open_brace = none
+
+# Không xuống dòng trước else, catch, finally
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false
+
+# Các tùy chọn khác (tùy chọn)
+csharp_space_after_cast = false
+csharp_preserve_single_line_blocks = true
