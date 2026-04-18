@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Card", menuName = "DataConfigSO/DataCardConfigSO")]
+[CreateAssetMenu(fileName = "Card", menuName = "DataConfigSO/DataCardConfigSO", order = 1)]
 public class DataCardConfigSO : ScriptableObject {
     public E_idCard id;
     public E_typeCard type;

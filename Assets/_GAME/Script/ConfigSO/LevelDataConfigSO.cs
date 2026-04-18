@@ -1,25 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "LevelData", menuName = "DataConfigSO/LevelDataConfigSO")]
-public class LevelDataConfigSO : ScriptableObject {
-    public S_LevelData[] levelDatas;
-
-    public S_LevelData GetLevelData(int level) {
-        if (level < 0 || level >= levelDatas.Length) {
-            return levelDatas[0];
-        }
-        return levelDatas[level];
-    }
-
-    public bool CheckLevelDataExist(int level) {
-        // Kiểm tra level có tồn tại
-        return level >= 0 && level < levelDatas.Length;
-    }
-}
-
-[System.Serializable]
-public struct S_LevelData {
+[CreateAssetMenu(fileName = "Level", menuName = "DataConfigSO/DataLevelConfigSO", order = 5)]
+public class DataLevelConfigSO : ScriptableObject {
     public S_WaveEnemy[] waveEnemies;
+
     public S_WaveEnemy GetWaveEnemy(int wave) {
         if (wave < 0 || wave >= waveEnemies.Length) {
             return waveEnemies[0];

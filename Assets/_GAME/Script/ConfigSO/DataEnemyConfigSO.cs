@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "DataConfigSO/DataEnemyConfigSO")]
+[CreateAssetMenu(fileName = "Enemy", menuName = "DataConfigSO/DataEnemyConfigSO", order = 3)]
 public class DataEnemyConfigSO : ScriptableObject {
     public E_idEnemy id;
     public E_typeEnemy type;

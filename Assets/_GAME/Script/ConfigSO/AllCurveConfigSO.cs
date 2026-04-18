@@ -3,8 +3,8 @@ using System.Collections;
 using System;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Curve", menuName = "DataConfigSO/CurveSO")]
-public class CurveSO : ScriptableObject {
+[CreateAssetMenu(fileName = "AllCurve", menuName = "DataConfigSO/AllCurveConfigSO", order = 6)]
+public class AllCurveConfigSO : ScriptableObject {
     public AnimationCurve OutBack, OutQuad;
 
     public static IEnumerator IEScale(Transform transform, Vector3 startScale, Vector3 targetScale, float duration, AnimationCurve curve, Action onComplete = null) {

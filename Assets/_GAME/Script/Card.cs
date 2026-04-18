@@ -38,7 +38,7 @@ public class Card : MonoBehaviour {
         transform.SetParent(parent.parent);
         tempOutlineBlur.gameObject.SetActive(true);
         tempOutlineBlur.color = color;
-        StartCoroutine(CurveSO.IELocalMove(this, transform, transform.localPosition, posOriginToParent + position, timeAnimCardSelect, curve));
+        StartCoroutine(AllCurveConfigSO.IELocalMove(this, transform, transform.localPosition, posOriginToParent + position, timeAnimCardSelect, curve));
         transform.rotation = Quaternion.identity;
     }
 
@@ -51,7 +51,7 @@ public class Card : MonoBehaviour {
 
     public void Move(Vector3 offset, AnimationCurve curve) {
         StopAllCoroutines();
-        StartCoroutine(CurveSO.IELocalMove(this, transform, transform.localPosition, posOrigin + offset, timeAnimCardSelect, curve));
+        StartCoroutine(AllCurveConfigSO.IELocalMove(this, transform, transform.localPosition, posOrigin + offset, timeAnimCardSelect, curve));
     }
 
     public void MoveToDefault() {
@@ -62,10 +62,10 @@ public class Card : MonoBehaviour {
     public void AnimSpawmNew(AnimationCurve curveScale, AnimationCurve curveRotate, Vector3 posTouch, float timeOffset) {
         StopAllCoroutines();
         gameObject.SetActive(true);
-        StartCoroutine(CurveSO.IEScale(transform, new Vector3(.75f, .75f, .75f), Vector3.one, .3f + timeOffset, curveScale));
+        StartCoroutine(AllCurveConfigSO.IEScale(transform, new Vector3(.75f, .75f, .75f), Vector3.one, .3f + timeOffset, curveScale));
         Vector3 rotateTmp = new Vector3(GamePlayController.Remap(posTouch.y - transform.position.y, 0, 500, -1f, 1f), GamePlayController.Remap(posTouch.x - transform.position.x, -500, 500, 10f, -10f), GamePlayController.Remap(posTouch.x - transform.position.x, -500, 500, -1.2f, 1.2f));
         transform.localRotation = Quaternion.Euler(rotateTmp);
-        StartCoroutine(CurveSO.IELocalRotate(transform, rotateTmp, Vector3.zero, .3f + timeOffset, curveRotate, () => isAnimSpawnNew = false));
+        StartCoroutine(AllCurveConfigSO.IELocalRotate(transform, rotateTmp, Vector3.zero, .3f + timeOffset, curveRotate, () => isAnimSpawnNew = false));
     }
 
     public void SetTempImage(bool isActive, AnimationCurve curve, MonoBehaviour script) {
@@ -90,8 +90,8 @@ public class Card : MonoBehaviour {
     void SetTempWhiteLight(AnimationCurve curve, MonoBehaviour script) {
         tempOutlineBlur.gameObject.SetActive(false);
         tempWhiteLight.gameObject.SetActive(true);
-        tempWhiteLightCoroutine = script.StartCoroutine(CurveSO.IEFadeColorImage(tempWhiteLight, .4f, 1, .1f, curve, 
-            () => tempWhiteLightCoroutine = script.StartCoroutine(CurveSO.IEFadeColorImage(tempWhiteLight, 1, .3f, .25f, curve, 
+        tempWhiteLightCoroutine = script.StartCoroutine(AllCurveConfigSO.IEFadeColorImage(tempWhiteLight, .4f, 1, .1f, curve, 
+            () => tempWhiteLightCoroutine = script.StartCoroutine(AllCurveConfigSO.IEFadeColorImage(tempWhiteLight, 1, .3f, .25f, curve, 
             () => {
                 tempWhiteLight.gameObject.SetActive(false);
                 tempOutlineBlur.gameObject.SetActive(true);

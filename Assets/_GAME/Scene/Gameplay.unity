@@ -12284,6 +12284,7 @@ MonoBehaviour:
   colorCellActive: {r: 0.23921569, g: 1, b: 0, a: 0.43137255}
   colorCellDeactive: {r: 1, g: 0, b: 0, a: 0.43137255}
   sizeCell: 62
+  allCardConfigSO: {fileID: 11400000, guid: f4b007afb8ce89d458750002fbb3ff34, type: 2}
   dataCardConfigSOs:
   - {fileID: 11400000, guid: c9c74671b867dad4c8a1f3b94cdbec3f, type: 2}
   - {fileID: 11400000, guid: 9d733b4b00bd1054b8fe441c5f19e017, type: 2}
@@ -12322,6 +12323,8 @@ MonoBehaviour:
   rotateStartSlotCard: {x: -0.1, y: -0.4, z: -0.025}
   rotateTargetSlotCard: {x: -0.1, y: 0.4, z: 0.025}
   curveSO: {fileID: 11400000, guid: 43a28054948d3e24399770e4e852951c, type: 2}
+  allEnemyConfigSO: {fileID: 11400000, guid: 9b833cac8debe3b468fac9f1e6905d8a, type: 2}
+  allLevelConfigSO: {fileID: 11400000, guid: 36c3b0179408bf44ba3cb8573d23ac51, type: 2}
   amountHpMax: 200
   progessHp: {fileID: 425985590}
   progessHPBound: {fileID: 1809101100}

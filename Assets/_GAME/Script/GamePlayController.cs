@@ -83,8 +83,8 @@ public class GamePlayController : MonoBehaviour {
         for (int i = 0; i < gridCell.rows.Length; i++) {
             for (int j = 0; j < gridCell.rows[i].cols.Length; j++) {
                 gridCell.rows[i].cols[j].cell.enabled = true;
-                StartCoroutine(CurveSO.IEScale(gridCell.rows[i].cols[j].cell.transform, new Vector3(1.3f, 1.3f, 1.3f), Vector3.one, .3f, curveSO.OutQuad));
-                StartCoroutine(CurveSO.IEColorSprite(gridCell.rows[i].cols[j].cell, Color.white, colorCellDefault, .3f, curveSO.OutQuad));
+                StartCoroutine(AllCurveConfigSO.IEScale(gridCell.rows[i].cols[j].cell.transform, new Vector3(1.3f, 1.3f, 1.3f), Vector3.one, .3f, curveSO.OutQuad));
+                StartCoroutine(AllCurveConfigSO.IEColorSprite(gridCell.rows[i].cols[j].cell, Color.white, colorCellDefault, .3f, curveSO.OutQuad));
             }
             yield return new WaitForSeconds(.05f);
         }
@@ -109,6 +109,20 @@ public class GamePlayController : MonoBehaviour {
                 gridCell.rows[j].cols[i].cell.sortingOrder = orderCellDefault;
                 gridCell.rows[j].cols[i].isFull = false;
             }
+    }
+
+    [ContextMenu("DisplayCell")]
+    public void DisplayCell() {
+        for (int i = 0; i < gridCell.rows.Length; i++)
+            for (int j = 0; j < gridCell.rows[i].cols.Length; j++)
+                gridCell.rows[i].cols[j].cell.enabled = true;
+    }
+
+    [ContextMenu("HideCell")]
+    public void HideCell() {
+        for (int i = 0; i < gridCell.rows.Length; i++)
+            for (int j = 0; j < gridCell.rows[i].cols.Length; j++)
+                gridCell.rows[i].cols[j].cell.enabled = false;
     }
 
     bool hasLeft, hasRight;
@@ -224,6 +238,7 @@ public class GamePlayController : MonoBehaviour {
     #endregion
     #region CARD
     [Header("     --- CARD ---")]
+    public AllCardConfigSO allCardConfigSO;
     public DataCardConfigSO[] dataCardConfigSOs;
     public DataCardConfigSO[] curDataCardConfigSOs;
     public Transform towerParent;
@@ -243,7 +258,7 @@ public class GamePlayController : MonoBehaviour {
     public Vector3 offsetMoveSlotCard;
     public float timeAnimMoveSlotCard, timeDelayAnimMoveSlotCard;
     public Vector3 rotateStartSlotCard, rotateTargetSlotCard;
-    public CurveSO curveSO;
+    public AllCurveConfigSO curveSO;
     bool isSelectedCard;
 
     void InitCard() {
@@ -270,7 +285,7 @@ public class GamePlayController : MonoBehaviour {
     IEnumerator IEAnimeMoveSlotCardStart() {
         yield return new WaitForSeconds(.1f);
         for (int i = 0; i < curCards.Length; i++) {
-            StartCoroutine(CurveSO.IELocalMove(this, curCards[i].transform, curCards[i].transform.localPosition, Vector3.zero, .3f + (curCards.Length - i - 2) * 0.03f, curveSO.OutQuad));
+            StartCoroutine(AllCurveConfigSO.IELocalMove(this, curCards[i].transform, curCards[i].transform.localPosition, Vector3.zero, .3f + (curCards.Length - i - 2) * 0.03f, curveSO.OutQuad));
             curCards[i].AnimSpawmNew(curveSO.OutBack, curveSO.OutQuad, slotCards[i].position - storageCard.position, (curCards.Length - i - 2) * 0.03f);
             yield return new WaitForSeconds(.12f);
         }
@@ -285,8 +300,8 @@ public class GamePlayController : MonoBehaviour {
             slotCards[i].localRotation = Quaternion.Euler(rotateStartSlotCard);
         }
         for (int i = 0; i < slotCards.Length; i++) {
-            StartCoroutine(CurveSO.IELocalMoveLoop(this, slotCards[i], slotCards[i].localPosition, slotCards[i].localPosition + offsetMoveSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
-            StartCoroutine(CurveSO.IELocalRotateLoop(this, slotCards[i], rotateStartSlotCard, rotateTargetSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
+            StartCoroutine(AllCurveConfigSO.IELocalMoveLoop(this, slotCards[i], slotCards[i].localPosition, slotCards[i].localPosition + offsetMoveSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
+            StartCoroutine(AllCurveConfigSO.IELocalRotateLoop(this, slotCards[i], rotateStartSlotCard, rotateTargetSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
             yield return new WaitForSeconds(timeDelayAnimMoveSlotCard);
         }
     }
@@ -363,7 +378,7 @@ public class GamePlayController : MonoBehaviour {
             curDataCardConfigSOs[idCardSelected] = RandomDataCard();
             curCards[idCardSelected].InitUI(GetBgElementCard(curDataCardConfigSOs[idCardSelected].element), curDataCardConfigSOs[idCardSelected].icon, curDataCardConfigSOs[idCardSelected].name, curDataCardConfigSOs[idCardSelected].mana, CheckMana(curDataCardConfigSOs[idCardSelected].mana));
             int idCardTemp = idCardSelected;
-            StartCoroutine(CurveSO.IELocalMove(this, curCards[idCardSelected].transform, curCards[idCardSelected].transform.localPosition, Vector3.zero, .3f + (curCards.Length - idCardSelected - 2) * 0.03f, curveSO.OutQuad, () => eventTriggerslotCards[idCardTemp].enabled = true));
+            StartCoroutine(AllCurveConfigSO.IELocalMove(this, curCards[idCardSelected].transform, curCards[idCardSelected].transform.localPosition, Vector3.zero, .3f + (curCards.Length - idCardSelected - 2) * 0.03f, curveSO.OutQuad, () => eventTriggerslotCards[idCardTemp].enabled = true));
             curCards[idCardSelected].AnimSpawmNew(curveSO.OutBack, curveSO.OutQuad, slotCards[idCardSelected].position - storageCard.position, (curCards.Length - idCardSelected - 2) * 0.03f);
             slotCards[idCardSelected].SetSiblingIndex(slotCards.Length - 1);
         } else {
@@ -429,6 +444,32 @@ public class GamePlayController : MonoBehaviour {
         for (int i = 0; i < curCards.Length; i++)
             curCards[i].SetTempImage(CheckMana(curDataCardConfigSOs[i].mana), curveSO.OutQuad, this);
     }
+
+    #region CELL
+    [System.Serializable]
+    public struct S_cell {
+        public SpriteRenderer cell;
+        public bool isFull;
+    }
+
+    [System.Serializable]
+    public struct S_ColCell {
+        public S_cell[] cols;
+    }
+
+    [System.Serializable]
+    public struct S_GridCell {
+        public S_ColCell[] rows;
+    }
+    #endregion
+    #endregion
+    #region ENEMY
+    [Header("     --- ENEMY ---")]
+    public AllEnemyConfigSO allEnemyConfigSO;
+    #endregion
+    #region LEVEL
+    [Header("     --- LEVEL ---")]
+    public AllLevelConfigSO allLevelConfigSO;
     #endregion
     #region HP
     [Header("     --- HP ---")]
@@ -530,20 +571,3 @@ public class GamePlayController : MonoBehaviour {
     }
     #endregion
 }
-#region CELL
-[System.Serializable]
-public struct S_cell {
-    public SpriteRenderer cell;
-    public bool isFull;
-}
-
-[System.Serializable]
-public struct S_ColCell {
-    public S_cell[] cols;
-}
-
-[System.Serializable]
-public struct S_GridCell {
-    public S_ColCell[] rows;
-}
-#endregion
