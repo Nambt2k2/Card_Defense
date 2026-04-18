@@ -7,21 +7,22 @@ using UnityEngine.UI;
 public class CurveSO : ScriptableObject {
     public AnimationCurve OutBack, OutQuad;
 
-    public static IEnumerator IEScale(Transform transform, Vector3 targerScale, float duration, AnimationCurve curve, Action onComplete = null) {
+    public static IEnumerator IEScale(Transform transform, Vector3 startScale, Vector3 targetScale, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
-        Vector3 startScale = transform.localScale;
+        transform.localScale = startScale;
         while (elapsed < duration) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            transform.localScale = Vector3.Lerp(startScale, targerScale, curve.Evaluate(t));
+            transform.localScale = Vector3.Lerp(startScale, targetScale, curve.Evaluate(t));
             yield return null;
         }
-        transform.localScale = targerScale;
+        transform.localScale = targetScale;
         onComplete?.Invoke();
     }
 
      public static IEnumerator IELocalRotate(Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
+        transform.localRotation = Quaternion.Euler(startRotate);
         while (elapsed < duration) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
@@ -32,9 +33,9 @@ public class CurveSO : ScriptableObject {
         onComplete?.Invoke();
     }
 
-    public static IEnumerator IELocalMove(MonoBehaviour script, Transform transform, Vector3 targetPosition, float duration, AnimationCurve curve, Action onComplete = null) {
+    public static IEnumerator IELocalMove(MonoBehaviour script, Transform transform, Vector3 startPosition, Vector3 targetPosition, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
-        Vector3 startPosition = transform.localPosition;
+        transform.localPosition = startPosition;
         while (elapsed < duration) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
@@ -45,9 +46,9 @@ public class CurveSO : ScriptableObject {
         onComplete?.Invoke();
     }
 
-    public static IEnumerator IELocalMoveLoop(MonoBehaviour script, Transform transform, Vector3 targetPosition, float duration, AnimationCurve curve) {
+    public static IEnumerator IELocalMoveLoop(MonoBehaviour script, Transform transform, Vector3 startPosition, Vector3 targetPosition, float duration, AnimationCurve curve) {
         float elapsed = 0f;
-        Vector3 startPosition = transform.localPosition;
+        transform.localPosition = startPosition;
         while (elapsed < duration) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
@@ -55,11 +56,12 @@ public class CurveSO : ScriptableObject {
             yield return null;
         }
         transform.localPosition = targetPosition;
-        script.StartCoroutine(IELocalMoveLoop(script, transform, startPosition, duration, curve));
+        script.StartCoroutine(IELocalMoveLoop(script, transform, targetPosition, startPosition, duration, curve));
     }
 
     public static IEnumerator IELocalRotateLoop(MonoBehaviour script, Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve) {
         float elapsed = 0f;
+        transform.localRotation = Quaternion.Euler(startRotate);
         while (elapsed < duration) {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
@@ -83,6 +85,19 @@ public class CurveSO : ScriptableObject {
             yield return null;
         }
         img.color = targetColor;
+        onComplete?.Invoke();
+    }
+
+    public static IEnumerator IEColorSprite(SpriteRenderer sprite, Color startColor, Color targetColor, float duration, AnimationCurve curve, Action onComplete = null) {
+        float elapsed = 0f;
+        sprite.color = startColor;
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            sprite.color = Color.Lerp(startColor, targetColor, curve.Evaluate(t));
+            yield return null;
+        }
+        sprite.color = targetColor;
         onComplete?.Invoke();
     }
 }

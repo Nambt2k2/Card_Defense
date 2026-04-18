@@ -81,8 +81,11 @@ public class GamePlayController : MonoBehaviour {
     IEnumerator IEAnimGrid() {
         yield return null;
         for (int i = 0; i < gridCell.rows.Length; i++) {
-            for (int j = 0; j < gridCell.rows[i].cols.Length; j++)
+            for (int j = 0; j < gridCell.rows[i].cols.Length; j++) {
                 gridCell.rows[i].cols[j].cell.enabled = true;
+                StartCoroutine(CurveSO.IEScale(gridCell.rows[i].cols[j].cell.transform, new Vector3(1.3f, 1.3f, 1.3f), Vector3.one, .3f, curveSO.OutQuad));
+                StartCoroutine(CurveSO.IEColorSprite(gridCell.rows[i].cols[j].cell, Color.white, colorCellDefault, .3f, curveSO.OutQuad));
+            }
             yield return new WaitForSeconds(.05f);
         }
         StartCoroutine(IEAnimeMoveSlotCardStart());
@@ -267,7 +270,7 @@ public class GamePlayController : MonoBehaviour {
     IEnumerator IEAnimeMoveSlotCardStart() {
         yield return new WaitForSeconds(.1f);
         for (int i = 0; i < curCards.Length; i++) {
-            StartCoroutine(CurveSO.IELocalMove(this, curCards[i].transform, Vector3.zero, .3f + (curCards.Length - i - 2) * 0.03f, curveSO.OutQuad));
+            StartCoroutine(CurveSO.IELocalMove(this, curCards[i].transform, curCards[i].transform.localPosition, Vector3.zero, .3f + (curCards.Length - i - 2) * 0.03f, curveSO.OutQuad));
             curCards[i].AnimSpawmNew(curveSO.OutBack, curveSO.OutQuad, slotCards[i].position - storageCard.position, (curCards.Length - i - 2) * 0.03f);
             yield return new WaitForSeconds(.12f);
         }
@@ -282,7 +285,7 @@ public class GamePlayController : MonoBehaviour {
             slotCards[i].localRotation = Quaternion.Euler(rotateStartSlotCard);
         }
         for (int i = 0; i < slotCards.Length; i++) {
-            StartCoroutine(CurveSO.IELocalMoveLoop(this, slotCards[i], slotCards[i].localPosition + offsetMoveSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
+            StartCoroutine(CurveSO.IELocalMoveLoop(this, slotCards[i], slotCards[i].localPosition, slotCards[i].localPosition + offsetMoveSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
             StartCoroutine(CurveSO.IELocalRotateLoop(this, slotCards[i], rotateStartSlotCard, rotateTargetSlotCard, timeAnimMoveSlotCard, curveSO.OutQuad));
             yield return new WaitForSeconds(timeDelayAnimMoveSlotCard);
         }
@@ -360,7 +363,7 @@ public class GamePlayController : MonoBehaviour {
             curDataCardConfigSOs[idCardSelected] = RandomDataCard();
             curCards[idCardSelected].InitUI(GetBgElementCard(curDataCardConfigSOs[idCardSelected].element), curDataCardConfigSOs[idCardSelected].icon, curDataCardConfigSOs[idCardSelected].name, curDataCardConfigSOs[idCardSelected].mana, CheckMana(curDataCardConfigSOs[idCardSelected].mana));
             int idCardTemp = idCardSelected;
-            StartCoroutine(CurveSO.IELocalMove(this, curCards[idCardSelected].transform, Vector3.zero, .3f + (curCards.Length - idCardSelected - 2) * 0.03f, curveSO.OutQuad, () => eventTriggerslotCards[idCardTemp].enabled = true));
+            StartCoroutine(CurveSO.IELocalMove(this, curCards[idCardSelected].transform, curCards[idCardSelected].transform.localPosition, Vector3.zero, .3f + (curCards.Length - idCardSelected - 2) * 0.03f, curveSO.OutQuad, () => eventTriggerslotCards[idCardTemp].enabled = true));
             curCards[idCardSelected].AnimSpawmNew(curveSO.OutBack, curveSO.OutQuad, slotCards[idCardSelected].position - storageCard.position, (curCards.Length - idCardSelected - 2) * 0.03f);
             slotCards[idCardSelected].SetSiblingIndex(slotCards.Length - 1);
         } else {
