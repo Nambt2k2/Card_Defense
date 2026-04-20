@@ -12,3 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313856c1c3948f649aeed7634826d7a4, type: 3}
   m_Name: Level_001
   m_EditorClassIdentifier: Assembly-CSharp::LevelDataConfigSO
+  timeWaitStartLevel: 2
+  waveEnemies:
+  - timeWave: 20
+    enemySpawnInfos:
+    - idEnemy: 0
+      enemyStepSpawnInfos:
+      - timeSpawmEnemy: 0.2
+        amountEnemySpawn: 15
+        indexCellXCanSpawn: 
+        amountLoopSpawm: 1
+        timeWaitLoopSpawm: 0.5
+    - idEnemy: 1
+      enemyStepSpawnInfos:
+      - timeSpawmEnemy: 7.8
+        amountEnemySpawn: 12
+        indexCellXCanSpawn: 
+        amountLoopSpawm: 1
+        timeWaitLoopSpawm: 0.5
+    - idEnemy: 3
+      enemyStepSpawnInfos:
+      - timeSpawmEnemy: 14.4
+        amountEnemySpawn: 6
+        indexCellXCanSpawn: 
+        amountLoopSpawm: 1
+        timeWaitLoopSpawm: 0.5
+  - timeWave: 10
+    enemySpawnInfos:
+    - idEnemy: 2
+      enemyStepSpawnInfos:
+      - timeSpawmEnemy: 0.5
+        amountEnemySpawn: 10
+        indexCellXCanSpawn: 
+        amountLoopSpawm: 1
+        timeWaitLoopSpawm: 0.7
+    - idEnemy: 4
+      enemyStepSpawnInfos:
+      - timeSpawmEnemy: -1
+        amountEnemySpawn: 1
+        indexCellXCanSpawn: 07000000
+        amountLoopSpawm: 0
+        timeWaitLoopSpawm: 0

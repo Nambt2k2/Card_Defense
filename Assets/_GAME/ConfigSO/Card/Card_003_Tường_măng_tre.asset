@@ -20,5 +20,5 @@ MonoBehaviour:
   mana: 1
   name: "T\u01B0\u1EDDng m\u0103ng tre"
   description: 
-  icon: {fileID: -4777607009240715934, guid: 99c1bfdac2678a84a937ce4a9e14b2b9, type: 3}
+  icon: {fileID: 21300000, guid: 99c1bfdac2678a84a937ce4a9e14b2b9, type: 3}
   prefab: {fileID: 2113023791807292215, guid: ba181cb868a71be4eaa92930c5277066, type: 3}

@@ -11,5 +11,5 @@ public class DataEnemyConfigSO : ScriptableObject {
     new public string name;
     public string description;
     public Sprite icon;
-    public GameObject prefab;
+    public Enemy prefab;
 }

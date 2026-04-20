@@ -100,4 +100,19 @@ public class AllCurveConfigSO : ScriptableObject {
         sprite.color = targetColor;
         onComplete?.Invoke();
     }
+
+    public static IEnumerator IEFadeCanvas(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration, float delay, AnimationCurve curve, Action onComplete = null) {
+        float elapsed = 0f;
+        canvasGroup.alpha = startAlpha;
+        if (delay > 0)
+            yield return new WaitForSeconds(delay);
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, curve.Evaluate(t));
+            yield return null;
+        }
+        canvasGroup.alpha = endAlpha;
+        onComplete?.Invoke();
+    }
 }

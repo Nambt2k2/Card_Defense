@@ -20,5 +20,5 @@ MonoBehaviour:
   mana: 2
   name: "R\xF9a th\u1EA7n ph\xE1o"
   description: 
-  icon: {fileID: 2792515106692376045, guid: 61e5be2a2aad81d4b80b17803690b08c, type: 3}
+  icon: {fileID: 21300000, guid: 61e5be2a2aad81d4b80b17803690b08c, type: 3}
   prefab: {fileID: -5699945750019347751, guid: a14494f97da19fe4fb39bbf0aaaf630f, type: 3}

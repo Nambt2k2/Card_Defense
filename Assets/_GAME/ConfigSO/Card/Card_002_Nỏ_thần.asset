@@ -20,5 +20,5 @@ MonoBehaviour:
   mana: 1
   name: "N\u1ECF th\u1EA7n"
   description: 
-  icon: {fileID: 1850409260836036989, guid: 27115e311f222604f95b758a9693f91a, type: 3}
+  icon: {fileID: 21300000, guid: 27115e311f222604f95b758a9693f91a, type: 3}
   prefab: {fileID: 4031071668145091827, guid: 97f77abb425fdca46bc639018b259a35, type: 3}

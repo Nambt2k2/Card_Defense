@@ -20,5 +20,5 @@ MonoBehaviour:
   element: 1
   name: "\xD4ng ba b\u1ECB"
   description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: 2d11d029c8909d84e8e6a2062894f951, type: 3}
+  prefab: {fileID: 630037467343565613, guid: a24e9e3fe0fa13a49a9c56c72ae8c7ef, type: 3}

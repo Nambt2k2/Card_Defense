@@ -20,5 +20,5 @@ MonoBehaviour:
   element: 1
   name: "Qu\u1EADn c\xFA"
   description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: 6afb5518660f6104eae89f3179869120, type: 3}
+  prefab: {fileID: 6775185211357852428, guid: d876628c9b4541943ab1f05b7932c0b7, type: 3}

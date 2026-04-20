@@ -20,5 +20,5 @@ MonoBehaviour:
   element: 0
   name: "Ch\u1EB1n tinh"
   description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: 2ac23515328d53344a5b9aca96551837, type: 3}
+  prefab: {fileID: 8603902083585718702, guid: 1bcf4d48525ebc3418eb1e65dc424f17, type: 3}

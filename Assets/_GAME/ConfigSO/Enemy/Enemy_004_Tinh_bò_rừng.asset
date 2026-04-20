@@ -20,5 +20,5 @@ MonoBehaviour:
   element: 0
   name: "Tinh b\xF2 r\u1EEBng"
   description: 
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7cdf7b34d8a83b74895dd1264d129884, type: 3}
+  prefab: {fileID: 2679532319780981655, guid: 2345fdcc750c18342a60dfe779814f7e, type: 3}

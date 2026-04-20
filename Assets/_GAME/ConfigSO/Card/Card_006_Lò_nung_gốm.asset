@@ -20,5 +20,5 @@ MonoBehaviour:
   mana: 3
   name: "L\xF2 nung g\u1ED1m"
   description: 
-  icon: {fileID: 6905921480998202033, guid: f94aca1aff70ac547ada96541a28f1a5, type: 3}
+  icon: {fileID: 21300000, guid: f94aca1aff70ac547ada96541a28f1a5, type: 3}
   prefab: {fileID: 7933985453391401075, guid: 33ba598aee0e31242904a6ba7928bc1f, type: 3}
