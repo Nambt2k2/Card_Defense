@@ -532,6 +532,8 @@ public class GamePlayController : MonoBehaviour {
     public TextMeshProUGUI textWave;
     public Image[] iconWave, iconWavePass;
     public Image progressWave;
+    public float stepProgess;
+    float timeDelaySpawmEnemyStart;
     int waveCur;
     S_WaveEnemy waveEnemyCur;
     float timeCur;
@@ -541,18 +543,31 @@ public class GamePlayController : MonoBehaviour {
         dataLevelConfigSOCur = allLevelConfigSO.GetLevelData(0);
         waveCur = 0;
         waveEnemyCur = dataLevelConfigSOCur.GetWaveEnemy(waveCur);
+        timeDelaySpawmEnemyStart = dataLevelConfigSOCur.timeWaitStartLevel;
         InitUIWave();
         StartCoroutine(AllCurveConfigSO.IEFadeCanvas(canvasGroupWave, 0, .99f, .15f, 2f, curveSO.OutQuad));
     }
 
     void UpdateWave() {
         timeCur += Time.deltaTime;
+        if (timeDelaySpawmEnemyStart > 0) {
+            if (timeCur >= timeDelaySpawmEnemyStart) {
+                timeDelaySpawmEnemyStart = -1;
+                UpdateUIWaveIconEnemy();
+                timeCur = 0;
+            }
+            return;
+        }
+        if (!dataLevelConfigSOCur.CheckWaveEnemyExist(waveCur))
+            return;
         if (timeCur >= waveEnemyCur.timeWave) {
             waveCur++;
             if (dataLevelConfigSOCur.CheckWaveEnemyExist(waveCur)) {
                 waveEnemyCur = dataLevelConfigSOCur.GetWaveEnemy(waveCur);
                 timeCur = 0;
+                UpdateUIWaveText();
             }
+            UpdateUIWaveIconEnemy();
         }
         UpdateUIProgressWave();
     }
@@ -561,16 +576,16 @@ public class GamePlayController : MonoBehaviour {
         for (int i = 0; i < iconWave.Length; i++) {
             if (i < dataLevelConfigSOCur.waveEnemies.Length) {
                 iconWave[i].gameObject.SetActive(true);
+                iconWave[i].color = Color.white;
                 iconWavePass[i].gameObject.SetActive(false);
             } else
                 iconWave[i].gameObject.SetActive(false);
         }
-        UpdateUIWave();
+        UpdateUIWaveText();
         UpdateUIProgressWave();
     }
 
-    void UpdateUIWave() {
-        textWave.text = $"WAVE  {waveCur + 1}<color=yellow>/{dataLevelConfigSOCur.waveEnemies.Length}</color>";
+    void UpdateUIWaveIconEnemy() {
         if (waveCur - 1 >= 0 && waveCur - 1 < iconWave.Length) {
             iconWavePass[waveCur - 1].gameObject.SetActive(true);
             iconWave[waveCur - 1].color = Color.white;
@@ -579,8 +594,13 @@ public class GamePlayController : MonoBehaviour {
             iconWave[waveCur].color = Color.red;
     }
 
+    void UpdateUIWaveText() {
+        textWave.text = $"WAVE  {waveCur + 1}<color=yellow>/{dataLevelConfigSOCur.waveEnemies.Length}</color>";
+    }
+
     void UpdateUIProgressWave() {
-        progressWave.fillAmount = Mathf.Clamp01(timeCur / waveEnemyCur.timeWave);
+        if (timeCur == 0 || timeCur >= waveEnemyCur.timeWave || timeCur / waveEnemyCur.timeWave - progressWave.fillAmount >= stepProgess)
+            progressWave.fillAmount = Mathf.Clamp01(timeCur / waveEnemyCur.timeWave);
     }
     #endregion
     #region HP
