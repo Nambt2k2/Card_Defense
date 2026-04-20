@@ -14,42 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelDataConfigSO
   timeWaitStartLevel: 2
   waveEnemies:
-  - timeWave: 20
+  - timeWave: 60
     enemySpawnInfos:
     - idEnemy: 0
-      enemyStepSpawnInfos:
-      - timeSpawmEnemy: 0.2
-        amountEnemySpawn: 15
-        indexCellXCanSpawn: 
-        amountLoopSpawm: 1
-        timeWaitLoopSpawm: 0.5
+      timeSpawmEnemy: 0.2
+      amountEnemySpawn: 20
+      indexCellXCanSpawn: 
+      amountLoopSpawm: 1
+      timeWaitLoopSpawm: 1.1
     - idEnemy: 1
-      enemyStepSpawnInfos:
-      - timeSpawmEnemy: 7.8
-        amountEnemySpawn: 12
-        indexCellXCanSpawn: 
-        amountLoopSpawm: 1
-        timeWaitLoopSpawm: 0.5
+      timeSpawmEnemy: 24
+      amountEnemySpawn: 10
+      indexCellXCanSpawn: 
+      amountLoopSpawm: 1
+      timeWaitLoopSpawm: 1.5
     - idEnemy: 3
-      enemyStepSpawnInfos:
-      - timeSpawmEnemy: 14.4
-        amountEnemySpawn: 6
-        indexCellXCanSpawn: 
-        amountLoopSpawm: 1
-        timeWaitLoopSpawm: 0.5
-  - timeWave: 10
+      timeSpawmEnemy: 41
+      amountEnemySpawn: 6
+      indexCellXCanSpawn: 
+      amountLoopSpawm: 1
+      timeWaitLoopSpawm: 2
+  - timeWave: 20
     enemySpawnInfos:
     - idEnemy: 2
-      enemyStepSpawnInfos:
-      - timeSpawmEnemy: 0.5
-        amountEnemySpawn: 10
-        indexCellXCanSpawn: 
-        amountLoopSpawm: 1
-        timeWaitLoopSpawm: 0.7
+      timeSpawmEnemy: 0.5
+      amountEnemySpawn: 8
+      indexCellXCanSpawn: 
+      amountLoopSpawm: 1
+      timeWaitLoopSpawm: 2
     - idEnemy: 4
-      enemyStepSpawnInfos:
-      - timeSpawmEnemy: -1
-        amountEnemySpawn: 1
-        indexCellXCanSpawn: 07000000
-        amountLoopSpawm: 0
-        timeWaitLoopSpawm: 0
+      timeSpawmEnemy: -1
+      amountEnemySpawn: 1
+      indexCellXCanSpawn: 07000000
+      amountLoopSpawm: 0
+      timeWaitLoopSpawm: 0

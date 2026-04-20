@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level", menuName = "DataConfigSO/DataLevelConfigSO", order = 5)]
@@ -16,32 +18,23 @@ public class DataLevelConfigSO : ScriptableObject {
         // Kiểm tra wave có tồn tại
         return wave >= 0 && wave < waveEnemies.Length;
     }
-
-    public float GetTimeWave(int wave) {
-        return GetWaveEnemy(wave).timeWave;
-    }
 }
 
 [System.Serializable]
 public struct S_WaveEnemy {
     public float timeWave;
     public S_EnemySpawnInfo[] enemySpawnInfos;
-    public S_EnemySpawnInfo GetEnemySpawnInfo(int index) {
-        if (index < 0 || index >= enemySpawnInfos.Length) {
-            return enemySpawnInfos[0];
-        }
-        return enemySpawnInfos[index];
+
+    public List<S_EnemySpawnInfo> GetListEnemySpawnInWave(int wave) {
+        List<S_EnemySpawnInfo> results = enemySpawnInfos.ToList();
+        results.Sort((S_EnemySpawnInfo a, S_EnemySpawnInfo b) => b.timeSpawmEnemy.CompareTo(a.timeSpawmEnemy));
+        return results;
     }
 }
 
 [System.Serializable]
 public struct S_EnemySpawnInfo {
     public E_idEnemy idEnemy;
-    public S_EnemyStepSpawnInfo[] enemyStepSpawnInfos;
-}
-
-[System.Serializable]
-public struct S_EnemyStepSpawnInfo {
     public float timeSpawmEnemy;
     public int amountEnemySpawn;
     public int[] indexCellXCanSpawn;

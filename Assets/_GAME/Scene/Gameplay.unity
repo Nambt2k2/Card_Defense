@@ -12983,7 +12983,8 @@ MonoBehaviour:
   - {fileID: 645442041}
   - {fileID: 835192400}
   progressWave: {fileID: 951265148}
-  stepProgess: 0.02
+  stepProgressFillAmount: 0.02
+  stepProgressTime: 0.5
   amountHpMax: 200
   progessHp: {fileID: 425985590}
   progessHPBound: {fileID: 1809101100}
