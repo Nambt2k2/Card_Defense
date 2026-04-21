@@ -519,9 +519,9 @@ public class GamePlayController : MonoBehaviour {
     void SpawnEnemy(E_idEnemy idEnemy, int indexCellX) {
         Enemy enemy = GetEnemyInPoolCur(idEnemy);
         if (enemy == null)
-            enemy = Instantiate(allEnemyConfigSO.GetEnemyData(idEnemy).prefab, new Vector3(grid.CellToWorld(new Vector3Int(indexCellX, 0, 0)).x, posYSpawnEnemy, 0), Quaternion.identity, enemyParent);
-        enemy.SetTargetMove(grid.CellToWorld(new Vector3Int(indexCellX, -1, 0)));
-        enemy.Init(curveSO.OutQuad);
+            enemy = Instantiate(allEnemyConfigSO.GetEnemyData(idEnemy).prefab, new Vector3(gridCell.rows[0].cols[indexCellX].cell.transform.position.x, posYSpawnEnemy, 0), Quaternion.identity, enemyParent);
+        enemy.Init(curveSO.OutQuad, sizeCell);
+        enemy.SetTargetMove(new Vector3(gridCell.rows[0].cols[indexCellX].cell.transform.position.x, gridCell.rows[0].cols[indexCellX].cell.transform.position.y - sizeCell * 1.5f, 0));
         enemyCurs.Add(enemy);
     }
 
