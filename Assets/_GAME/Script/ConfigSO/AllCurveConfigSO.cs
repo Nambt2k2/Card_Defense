@@ -20,7 +20,20 @@ public class AllCurveConfigSO : ScriptableObject {
         onComplete?.Invoke();
     }
 
-     public static IEnumerator IELocalRotate(Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve, Action onComplete = null) {
+    public static IEnumerator IEScaleLoop(MonoBehaviour script, Transform transform, Vector3 startScale, Vector3 targetScale, float duration, AnimationCurve curve) {
+        float elapsed = 0f;
+        transform.localScale = startScale;
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            transform.localScale = Vector3.Lerp(startScale, targetScale, curve.Evaluate(t));
+            yield return null;
+        }
+        transform.localScale = targetScale;
+        script.StartCoroutine(IEScaleLoop(script, transform, targetScale, startScale, duration, curve));
+    }
+
+    public static IEnumerator IELocalRotate(Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
         transform.localRotation = Quaternion.Euler(startRotate);
         while (elapsed < duration) {
@@ -31,6 +44,19 @@ public class AllCurveConfigSO : ScriptableObject {
         }
         transform.localRotation = Quaternion.Euler(targetRotate);
         onComplete?.Invoke();
+    }
+
+    public static IEnumerator IELocalRotateLoop(MonoBehaviour script, Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve) {
+        float elapsed = 0f;
+        transform.localRotation = Quaternion.Euler(startRotate);
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            transform.localRotation = Quaternion.Euler(Vector3.Lerp(startRotate, targetRotate, curve.Evaluate(t)));
+            yield return null;
+        }
+        transform.localRotation = Quaternion.Euler(targetRotate);
+        script.StartCoroutine(IELocalRotateLoop(script, transform, targetRotate, startRotate, duration, curve));
     }
 
     public static IEnumerator IELocalMove(MonoBehaviour script, Transform transform, Vector3 startPosition, Vector3 targetPosition, float duration, AnimationCurve curve, Action onComplete = null) {
@@ -57,19 +83,6 @@ public class AllCurveConfigSO : ScriptableObject {
         }
         transform.localPosition = targetPosition;
         script.StartCoroutine(IELocalMoveLoop(script, transform, targetPosition, startPosition, duration, curve));
-    }
-
-    public static IEnumerator IELocalRotateLoop(MonoBehaviour script, Transform transform, Vector3 startRotate, Vector3 targetRotate, float duration, AnimationCurve curve) {
-        float elapsed = 0f;
-        transform.localRotation = Quaternion.Euler(startRotate);
-        while (elapsed < duration) {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            transform.localRotation = Quaternion.Euler(Vector3.Lerp(startRotate, targetRotate, curve.Evaluate(t)));
-            yield return null;
-        }
-        transform.localRotation = Quaternion.Euler(targetRotate);
-        script.StartCoroutine(IELocalRotateLoop(script, transform, targetRotate, startRotate, duration, curve));
     }
 
     public static IEnumerator IEFadeColorImage(Image img, float startAlpha, float endAlpha, float duration, AnimationCurve curve, Action onComplete = null) {

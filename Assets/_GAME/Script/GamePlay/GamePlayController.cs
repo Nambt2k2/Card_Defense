@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class GamePlayController : MonoBehaviour {
     #region MAINFLOW
     public E_stateGame stateGame;
-    public Transform bgMap;
+    public SpriteRenderer bgMap;
     Camera camMain;
     [Header("     --- OrderDisplay ---")]
     public int orderCellDefault;
@@ -67,8 +67,9 @@ public class GamePlayController : MonoBehaviour {
         camMain = Camera.main;
         if (Screen.height / Screen.width >= (16f / 9)) {
             camMain.fieldOfView = Camera.HorizontalToVerticalFieldOfView(25, (float)Screen.width / Screen.height);
-            bgMap.position += new Vector3(0, (Screen.height - 1920f) / 2f, 0);
+            bgMap.transform.position += new Vector3(0, (Screen.height - 1920f) / 2f, 0);
         }
+        posYSpawnEnemy = bgMap.transform.position.y + bgMap.sprite.rect.size.y / 2;
     }
     #endregion
     #region GRID
@@ -492,6 +493,7 @@ public class GamePlayController : MonoBehaviour {
     [Header("     --- ENEMY ---")]
     public AllEnemyConfigSO allEnemyConfigSO;
     public Transform enemyParent;
+    float posYSpawnEnemy;
     HashSet<Enemy> enemyCurs = new HashSet<Enemy>();
     HashSet<Enemy> enemyPoolCurs = new HashSet<Enemy>();
     
@@ -517,9 +519,9 @@ public class GamePlayController : MonoBehaviour {
     void SpawnEnemy(E_idEnemy idEnemy, int indexCellX) {
         Enemy enemy = GetEnemyInPoolCur(idEnemy);
         if (enemy == null)
-            enemy = Instantiate(allEnemyConfigSO.GetEnemyData(idEnemy).prefab, grid.CellToWorld(new Vector3Int(indexCellX, 26, 0)), Quaternion.identity, enemyParent);
+            enemy = Instantiate(allEnemyConfigSO.GetEnemyData(idEnemy).prefab, new Vector3(grid.CellToWorld(new Vector3Int(indexCellX, 0, 0)).x, posYSpawnEnemy, 0), Quaternion.identity, enemyParent);
         enemy.SetTargetMove(grid.CellToWorld(new Vector3Int(indexCellX, -1, 0)));
-        enemy.Init();
+        enemy.Init(curveSO.OutQuad);
         enemyCurs.Add(enemy);
     }
 

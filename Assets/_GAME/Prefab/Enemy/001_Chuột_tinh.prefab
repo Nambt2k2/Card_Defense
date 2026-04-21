@@ -137,4 +137,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   dataEnemyConfig: {fileID: 11400000, guid: 1db09b1a965c9324daca22efdd53e09c, type: 2}
-  speedMove: 100
+  icon: {fileID: 1302826224610112919}
+  speedMove: 50
