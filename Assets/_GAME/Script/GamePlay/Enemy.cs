@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour {
 
     public void Move() {
         transform.position = Vector3.MoveTowards(transform.position, targetMoveCur, speedMove * Time.deltaTime);
-        if (Vector2.SqrMagnitude(transform.position - targetMoveCur) < 0.01f)
+        if (Vector2.SqrMagnitude(transform.position - targetMoveCur) < 0.005f)
             SetTargetMove(targetMove);
     }
 }
