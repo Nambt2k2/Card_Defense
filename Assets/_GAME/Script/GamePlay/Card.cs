@@ -32,11 +32,12 @@ public class Card : MonoBehaviour {
         colorOutlineBlurDefault = tempOutlineBlur.color;
     }
 
-    public void AnimSelect(Vector3 position, AnimationCurve curve, Color color) {
-        transform.SetParent(parent.parent);
+    public void AnimSelect(Vector3 position, Color color) {
+        //transform.SetParent(parent.parent);
         tempOutlineBlur.gameObject.SetActive(true);
         tempOutlineBlur.color = color;
-        transform.localPosition = posOriginToParent + position;
+        //transform.localPosition = posOriginToParent + position;
+        transform.localPosition = position;
         transform.rotation = Quaternion.identity;
     }
 
@@ -45,7 +46,7 @@ public class Card : MonoBehaviour {
     }
 
     public void AnimDeselect() {
-        transform.SetParent(parent);
+        //transform.SetParent(parent);
         tempOutlineBlur.color = colorOutlineBlurDefault;
         transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }

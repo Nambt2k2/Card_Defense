@@ -43,5 +43,9 @@ public class Tower : MonoBehaviour {
     public void Hide() {
         gameObject.SetActive(false);
     }
+
+    public bool IsActive() {
+        return gameObject.activeSelf;
+    }
     #endregion
 }

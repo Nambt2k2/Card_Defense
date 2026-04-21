@@ -333,7 +333,7 @@ public class GamePlayController : MonoBehaviour {
     void DragCardInGrid(Vector3 posTouch) {
         Vector3 posTouchTmp = posTouch + (curDataCardConfigSOs[idCardSelected].size.x % 2 == 0 ? offsetCheckToTouch2n : offsetCheckToTouch);
         Vector3Int indexCellTmp = grid.WorldToCell(posTouchTmp);
-        CardFollowDrag(posTouchTmp);
+        //CardFollowDrag(posTouchTmp);
         if (indexCellInGridCur == indexCellTmp)
             return;
         indexCellInGridCur = indexCellTmp;
@@ -351,9 +351,9 @@ public class GamePlayController : MonoBehaviour {
                     }
                 } else {
                     canDropCard = false;
-                    colorCellCheckCur = colorCellDeactive;
-                    // towerInCardCurs[idCardSelected].Hide();
-                    // return;
+                    //colorCellCheckCur = colorCellDeactive;
+                    towerInCardCurs[idCardSelected].Hide();
+                    return;
                 }
         if (canDropCard) {
             canDropCard = CalcIndexCanPlaces(indexCellChecks[0]);
@@ -375,21 +375,26 @@ public class GamePlayController : MonoBehaviour {
         return toMin + normalized * (toMax - toMin);
     }
 
-    void DropCardInGrid() {
+    void DropCardInGrid(bool isCancel = false) {
+        if (!towerInCardCurs[idCardSelected].IsActive() && !isCancel)
+            return;
         for (int i = 0; i < indexCellChecks.Count; i++) {
             gridCell.rows[indexCellChecks[i].y].cols[indexCellChecks[i].x].cell.color = colorCellDefault;
             gridCell.rows[indexCellChecks[i].y].cols[indexCellChecks[i].x].cell.sortingOrder = orderCellDefault;
         }
-        for (int i = 0; i < curCards.Length; i++) {
-            if (i < idCardSelected)
-                curCards[i].MoveToDefault();
-            else if (i == idCardSelected) {
-                curCards[idCardSelected].AnimDeselect();
-                HideUIManaUseCard();
-                isSelectedCard = false;
-            } else
-                curCards[i].MoveToDefault();
-        }
+        curCards[idCardSelected].AnimDeselect();
+        HideUIManaUseCard();
+        isSelectedCard = false;
+        // for (int i = 0; i < curCards.Length; i++) {
+        //     if (i < idCardSelected)
+        //         curCards[i].MoveToDefault();
+        //     else if (i == idCardSelected) {
+        //         curCards[idCardSelected].AnimDeselect();
+        //         HideUIManaUseCard();
+        //         isSelectedCard = false;
+        //     } else
+        //         curCards[i].MoveToDefault();
+        // }
         if (canDropCard) {
             UseMana(curDataCardConfigSOs[idCardSelected].mana);
             for (int i = 0; i < indexCellChecks.Count; i++)
@@ -439,21 +444,26 @@ public class GamePlayController : MonoBehaviour {
         if (!CheckMana(curDataCardConfigSOs[index].mana))
             return;
         if (isSelectedCard) {
-            DropCardInGrid();
-            return;
+            int idCardSelectedCur = idCardSelected;
+            DropCardInGrid(true);
+            if (index == idCardSelectedCur)
+                return;
         }
-        indexCellInGridCur = -Vector3Int.one;
         idCardSelected = index;
-        for (int i = 0; i < curCards.Length; i++) {
-            if (i < idCardSelected)
-                curCards[i].Move(offsetMoveCardSelect);
-            else if (i == idCardSelected) {
-                curCards[idCardSelected].AnimSelect(poscardSelect, curveSO.OutBack, colorCardOutlineSelected);
-                ShowUIManaUseCard();
-                isSelectedCard = true;
-            } else
-                curCards[i].Move(offsetMoveCardSelect);
-        }
+        indexCellInGridCur = -Vector3Int.one;
+        curCards[idCardSelected].AnimSelect(poscardSelect, colorCardOutlineSelected);
+        ShowUIManaUseCard();
+        isSelectedCard = true;
+        // for (int i = 0; i < curCards.Length; i++) {
+        //     if (i < idCardSelected)
+        //         curCards[i].Move(offsetMoveCardSelect);
+        //     else if (i == idCardSelected) {
+        //         curCards[idCardSelected].AnimSelect(poscardSelect, colorCardOutlineSelected);
+        //         ShowUIManaUseCard();
+        //         isSelectedCard = true;
+        //     } else
+        //         curCards[i].Move(offsetMoveCardSelect);
+        // }
         if (towerInCardCurs[idCardSelected] == null)
             towerInCardCurs[idCardSelected] = Instantiate(curDataCardConfigSOs[idCardSelected].prefab, towerParent);
         posTouchCur = touchPositionAction.ReadValue<Vector2>();
