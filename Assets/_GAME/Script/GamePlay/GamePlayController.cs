@@ -772,4 +772,9 @@ public class GamePlayController : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     #endregion
+    #region DRAWVIEWDEBUG
+    void OnDrawGizmos() {
+        
+    }
+    #endregion
 }
