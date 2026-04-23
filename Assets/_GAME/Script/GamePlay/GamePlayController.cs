@@ -21,8 +21,8 @@ public class GamePlayController : MonoBehaviour {
     public PlayerInput playerInput;
     InputAction touchPositionAction;
     InputAction touchPressAction;
-    Vector3 offsetCheckToTouch;
-    Vector3 offsetCheckToTouch2n;
+    float offsetPosYCheckToTouch;
+    float offsetCenterCheckToTouchn, offsetCenterCheckToTouch2n;
     Vector3 posTouchCur;
 
     void Awake() {
@@ -58,8 +58,9 @@ public class GamePlayController : MonoBehaviour {
     void InitTouchInput() {
         touchPositionAction = playerInput.actions["Position"];
         touchPressAction = playerInput.actions["Press"];
-        offsetCheckToTouch = new Vector3(0, sizeCell * 3, 0);
-        offsetCheckToTouch2n = new Vector3(sizeCell / 2, sizeCell * 3, 0);
+        offsetPosYCheckToTouch = 0;
+        offsetCenterCheckToTouchn = 0;
+        offsetCenterCheckToTouch2n = sizeCell / 2;
     }
 
     void InitViewGameplayFollowScreenSize() {
@@ -331,7 +332,7 @@ public class GamePlayController : MonoBehaviour {
     }
 
     void DragCardInGrid(Vector3 posTouch) {
-        Vector3 posTouchTmp = posTouch + (curDataCardConfigSOs[idCardSelected].size.x % 2 == 0 ? offsetCheckToTouch2n : offsetCheckToTouch);
+        Vector3 posTouchTmp = posTouch + new Vector3(curDataCardConfigSOs[idCardSelected].size.x % 2 == 0 ? offsetCenterCheckToTouch2n : offsetCenterCheckToTouchn, offsetPosYCheckToTouch + curDataCardConfigSOs[idCardSelected].size.y % 2 == 0 ? offsetCenterCheckToTouch2n : offsetCenterCheckToTouchn, 0);
         Vector3Int indexCellTmp = grid.WorldToCell(posTouchTmp);
         //CardFollowDrag(posTouchTmp);
         if (indexCellInGridCur == indexCellTmp)
@@ -341,7 +342,7 @@ public class GamePlayController : MonoBehaviour {
         indexCellChecks.Clear();
         Color colorCellCheckCur = colorCellActive;
         for (int i = -curDataCardConfigSOs[idCardSelected].size.x / 2; i < curDataCardConfigSOs[idCardSelected].size.x - curDataCardConfigSOs[idCardSelected].size.x / 2; i++)
-            for (int j = 0; j < curDataCardConfigSOs[idCardSelected].size.y; j++)
+            for (int j = -curDataCardConfigSOs[idCardSelected].size.y / 2; j < curDataCardConfigSOs[idCardSelected].size.y - curDataCardConfigSOs[idCardSelected].size.y / 2; j++)
                 if (indexCellInGridCur.x + i < size.x && indexCellInGridCur.y + j < size.y && indexCellInGridCur.x + i >= 0 && indexCellInGridCur.y + j >= 0) {
                     if (!gridCell.rows[indexCellInGridCur.y + j].cols[indexCellInGridCur.x + i].isFull)
                         indexCellChecks.Add(new Vector3Int(indexCellInGridCur.x + i, indexCellInGridCur.y + j, 0));
@@ -360,7 +361,7 @@ public class GamePlayController : MonoBehaviour {
             if (!canDropCard)
                 colorCellCheckCur = colorCellDeactive;
         }
-        towerInCardCurs[idCardSelected].DisplayCellCheckOnDrag(colorCellCheckCur, grid.CellToWorld(new Vector3Int(indexCellInGridCur.x - curDataCardConfigSOs[idCardSelected].size.x / 2, indexCellInGridCur.y, 0)) + new Vector3(sizeCell * curDataCardConfigSOs[idCardSelected].size.x / 2, sizeCell * curDataCardConfigSOs[idCardSelected].size.y / 2, 0));
+        towerInCardCurs[idCardSelected].DisplayCellCheckOnDrag(colorCellCheckCur, grid.CellToWorld(new Vector3Int(indexCellInGridCur.x - curDataCardConfigSOs[idCardSelected].size.x / 2, indexCellInGridCur.y - curDataCardConfigSOs[idCardSelected].size.y / 2, 0)) + new Vector3(sizeCell * curDataCardConfigSOs[idCardSelected].size.x / 2, sizeCell * curDataCardConfigSOs[idCardSelected].size.y / 2, 0));
     }
 
     void CardFollowDrag(Vector3 posTouch) {
