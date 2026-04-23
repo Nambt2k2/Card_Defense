@@ -14,6 +14,14 @@ public class DataLevelConfigSO : ScriptableObject {
         return waveEnemies[wave];
     }
 
+    public int GetAmountEnemySpawnInWave(S_WaveEnemy wave) {
+        int amount = 0;
+        for (int i = 0; i < wave.enemySpawnInfos.Length; i++)
+            if (wave.enemySpawnInfos[i].timeSpawmEnemy >= 0)
+                amount += wave.enemySpawnInfos[i].amountEnemySpawn;
+        return amount;
+    }
+
     public bool CheckWaveEnemyExist(int wave) {
         // Kiểm tra wave có tồn tại
         return wave >= 0 && wave < waveEnemies.Length;

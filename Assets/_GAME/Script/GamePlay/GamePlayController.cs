@@ -533,6 +533,8 @@ public class GamePlayController : MonoBehaviour {
         enemy.Init(curveSO.OutQuad, sizeCell);
         enemy.SetTargetMove(new Vector3(gridCell.rows[0].cols[indexCellX].cell.transform.position.x, gridCell.rows[0].cols[indexCellX].cell.transform.position.y - sizeCell * 1.5f, 0));
         enemyCurs.Add(enemy);
+        amountEnemySpawnWaveCur++;
+        UpdateUIProgressWave();
     }
 
     #endregion
@@ -544,22 +546,25 @@ public class GamePlayController : MonoBehaviour {
     public TextMeshProUGUI textWave;
     public Image[] iconWave, iconWavePass;
     public Image progressWave;
-    public float stepProgressFillAmount, stepProgressTime;
     float timeDelaySpawmEnemyStart;
     int waveCur;
     S_WaveEnemy waveEnemyCur;
     float timeCur;
+    int amountEnemySpawnWaveCur, amountEnemySpawnMaxWaveCur;
     bool isFirstSpawn;
 
     void InitLevelData() {
         // test level 1 sẽ bổ sung logic lấy level sau
         dataLevelConfigSOCur = allLevelConfigSO.GetLevelData(0);
+
         waveCur = 0;
+        timeCur = amountEnemySpawnWaveCur = 0;
         waveEnemyCur = dataLevelConfigSOCur.GetWaveEnemy(waveCur);
+        amountEnemySpawnMaxWaveCur = dataLevelConfigSOCur.GetAmountEnemySpawnInWave(waveEnemyCur);
         timeDelaySpawmEnemyStart = dataLevelConfigSOCur.timeWaitStartLevel;
-        isFirstSpawn = false;
+        isFirstSpawn = true;
         InitUIWave();
-        StartCoroutine(AllCurveConfigSO.IEFadeCanvas(canvasGroupWave, 0, .99f, .15f, 2f, curveSO.OutQuad));
+        canvasGroupWave.alpha = 0f;
     }
 
     void UpdateWave() {
@@ -571,9 +576,9 @@ public class GamePlayController : MonoBehaviour {
             }
             return;
         }
-        if (timeDelaySpawmEnemyStart <= 0 && !isFirstSpawn) {
-            isFirstSpawn = true;
+        if (timeDelaySpawmEnemyStart <= 0 && isFirstSpawn) {
             StartCoroutine(IEStartWave());
+            isFirstSpawn = false;
             UpdateUIWaveIconEnemy();
         }
         if (!dataLevelConfigSOCur.CheckWaveEnemyExist(waveCur))
@@ -583,12 +588,14 @@ public class GamePlayController : MonoBehaviour {
             if (dataLevelConfigSOCur.CheckWaveEnemyExist(waveCur)) {
                 waveEnemyCur = dataLevelConfigSOCur.GetWaveEnemy(waveCur);
                 timeCur = 0;
+                amountEnemySpawnWaveCur = 0;
+                amountEnemySpawnMaxWaveCur = dataLevelConfigSOCur.GetAmountEnemySpawnInWave(waveEnemyCur);
                 UpdateUIWaveText();
+                UpdateUIProgressWave();
                 StartCoroutine(IEStartWave());
             }
             UpdateUIWaveIconEnemy();
         }
-        UpdateUIProgressWave();
     }
 
     void InitUIWave() {
@@ -614,6 +621,8 @@ public class GamePlayController : MonoBehaviour {
     }
 
     IEnumerator IEStartWave() {
+        if (isFirstSpawn)
+            canvasGroupWave.alpha = .99f;
         float countTimeCur = 0;
         List<S_EnemySpawnInfo> enemySpawnInfos = waveEnemyCur.GetListEnemySpawnInWave(waveCur);
         List<S_EnemySpawnInfo> enemySpawnWaitCleanAllEnemy = new List<S_EnemySpawnInfo>();
@@ -670,8 +679,7 @@ public class GamePlayController : MonoBehaviour {
     }
 
     void UpdateUIProgressWave() {
-        if (timeCur == 0 || timeCur >= waveEnemyCur.timeWave || (timeCur / waveEnemyCur.timeWave - progressWave.fillAmount >= stepProgressFillAmount && timeCur - progressWave.fillAmount * waveEnemyCur.timeWave >= stepProgressTime))
-            progressWave.fillAmount = Mathf.Clamp01(timeCur / waveEnemyCur.timeWave);
+        progressWave.fillAmount = Mathf.Clamp01((float)amountEnemySpawnWaveCur / amountEnemySpawnMaxWaveCur);
     }
     #endregion
     #region HP
