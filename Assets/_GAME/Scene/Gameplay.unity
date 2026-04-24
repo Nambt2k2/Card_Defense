@@ -1131,7 +1131,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 9f256281ce73c7643b4d8b30ad55c90b, type: 3}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -13047,8 +13047,6 @@ MonoBehaviour:
   - {fileID: 645442041}
   - {fileID: 835192400}
   progressWave: {fileID: 951265148}
-  stepProgressFillAmount: 0.02
-  stepProgressTime: 0.5
   amountHpMax: 200
   progessHp: {fileID: 425985590}
   progessHPBound: {fileID: 1809101100}

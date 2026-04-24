@@ -687,6 +687,7 @@ public class GamePlayController : MonoBehaviour {
     public float amountHpMax;
     public Image progessHp;
     public RectTransform progessHPBound;
+    float amountHpCur;
 
     [ContextMenu("TestBaseTakeDame")]
     public void TestBaseTakeDame() {
@@ -712,7 +713,6 @@ public class GamePlayController : MonoBehaviour {
             Lose();
         UpdateUIHp();
     }
-    float amountHpCur;
     #endregion
     #region MANA
     [Header("     --- MANA ---")]
@@ -783,7 +783,11 @@ public class GamePlayController : MonoBehaviour {
     #endregion
     #region DRAWVIEWDEBUG
     void OnDrawGizmos() {
-        
+        Gizmos.color = Color.red;
+        for (int i = 0; i < size.x; i++)
+            for (int j = 0; j < 30; j++) {
+                Gizmos.DrawSphere(grid.GetCellCenterWorld(new Vector3Int(i, j, 0)), 8f);
+            }
     }
     #endregion
 }
