@@ -541,9 +541,11 @@ public class GamePlayController : MonoBehaviour {
     #region LEVEL
     [Header("     --- LEVEL ---")]
     public AllLevelConfigSO allLevelConfigSO;
+    public int levelCur;
     public CanvasGroup canvasGroupWave;
     DataLevelConfigSO dataLevelConfigSOCur;
     public TextMeshProUGUI textWave;
+    public ScrollRect scrollRectIconWave;
     public Image[] iconWave, iconWavePass;
     public Image progressWave;
     float timeDelaySpawmEnemyStart;
@@ -554,9 +556,15 @@ public class GamePlayController : MonoBehaviour {
     bool isFirstSpawn;
 
     void InitLevelData() {
-        // test level 1 sẽ bổ sung logic lấy level sau
-        dataLevelConfigSOCur = allLevelConfigSO.GetLevelData(0);
-
+        // test lưu tạm vào 1 biến sau có thể sửa lại
+        if (PlayerPrefs.HasKey("Level"))
+            levelCur = PlayerPrefs.GetInt("Level");
+        else {
+            levelCur = 0;
+        }
+        dataLevelConfigSOCur = allLevelConfigSO.GetLevelData(levelCur);
+        levelCur++;
+        PlayerPrefs.SetInt("Level", levelCur);
         waveCur = 0;
         timeCur = amountEnemySpawnWaveCur = 0;
         waveEnemyCur = dataLevelConfigSOCur.GetWaveEnemy(waveCur);
@@ -612,12 +620,32 @@ public class GamePlayController : MonoBehaviour {
     }
 
     void UpdateUIWaveIconEnemy() {
-        if (waveCur - 1 >= 0 && waveCur - 1 < iconWave.Length) {
-            iconWavePass[waveCur - 1].gameObject.SetActive(true);
-            iconWave[waveCur - 1].color = Color.white;
+        if (waveCur == dataLevelConfigSOCur.waveEnemies.Length) {
+            for (int i = 0; i < iconWave.Length; i++) {
+                iconWave[i].color = Color.white;
+                iconWavePass[i].gameObject.SetActive(true);
+            }
+            return;
         }
-        if (waveCur >= 0 && waveCur < iconWave.Length)
-            iconWave[waveCur].color = Color.red;
+        if (waveCur - 1 >= 0) {
+            iconWavePass[Mathf.Clamp(waveCur - 1, 0, iconWavePass.Length - 1)].gameObject.SetActive(true);
+            iconWave[Mathf.Clamp(waveCur - 1, 0, iconWave.Length - 1)].color = Color.white;
+        }
+        iconWave[Mathf.Clamp(waveCur, 0, iconWave.Length - 1)].color = Color.red;
+        if (waveCur > 4 && waveCur < dataLevelConfigSOCur.waveEnemies.Length) {
+            iconWave[iconWave.Length - 2].color = Color.white;
+            iconWavePass[iconWave.Length - 1].gameObject.SetActive(false);
+            iconWavePass[iconWave.Length - 2].gameObject.SetActive(true);
+            StartCoroutine(AllCurveConfigSO.IEValueChange(0, 1, .2f, curveSO.OutQuad,
+                (value) => scrollRectIconWave.horizontalNormalizedPosition = value
+                , () => {
+                    scrollRectIconWave.horizontalNormalizedPosition = 0;
+                    iconWave[iconWave.Length - 1].color = Color.white;
+                    iconWave[iconWave.Length - 2].color = Color.red;
+                    iconWavePass[iconWave.Length - 1].gameObject.SetActive(false);
+                    iconWavePass[iconWave.Length - 2].gameObject.SetActive(false);
+            }));
+        }
     }
 
     IEnumerator IEStartWave() {

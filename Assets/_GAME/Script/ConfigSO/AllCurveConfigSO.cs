@@ -7,6 +7,21 @@ using UnityEngine.UI;
 public class AllCurveConfigSO : ScriptableObject {
     public AnimationCurve OutBack, OutQuad;
 
+    public static IEnumerator IEValueChange(float startValue, float targetValue, float duration, AnimationCurve curve, Action<float> onUpdate = null, Action onComplete = null) {
+        float elapsed = 0f;
+        float valueTmp = startValue;
+        onUpdate?.Invoke(startValue);
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            valueTmp = Mathf.Lerp(startValue, targetValue, curve.Evaluate(t));
+            onUpdate?.Invoke(valueTmp);
+            yield return null;
+        }
+        onUpdate?.Invoke(targetValue);
+        onComplete?.Invoke();
+    }
+
     public static IEnumerator IEScale(Transform transform, Vector3 startScale, Vector3 targetScale, float duration, AnimationCurve curve, Action onComplete = null) {
         float elapsed = 0f;
         transform.localScale = startScale;
@@ -111,6 +126,19 @@ public class AllCurveConfigSO : ScriptableObject {
             yield return null;
         }
         sprite.color = targetColor;
+        onComplete?.Invoke();
+    }
+
+    public static IEnumerator IEColorImage(Image image, Color startColor, Color targetColor, float duration, AnimationCurve curve, Action onComplete = null) {
+        float elapsed = 0f;
+        image.color = startColor;
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            image.color = Color.Lerp(startColor, targetColor, curve.Evaluate(t));
+            yield return null;
+        }
+        image.color = targetColor;
         onComplete?.Invoke();
     }
 

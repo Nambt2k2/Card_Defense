@@ -13030,8 +13030,10 @@ MonoBehaviour:
   allEnemyConfigSO: {fileID: 11400000, guid: 9b833cac8debe3b468fac9f1e6905d8a, type: 2}
   enemyParent: {fileID: 714565285}
   allLevelConfigSO: {fileID: 11400000, guid: 36c3b0179408bf44ba3cb8573d23ac51, type: 2}
+  levelCur: 0
   canvasGroupWave: {fileID: 398647767}
   textWave: {fileID: 251031764}
+  scrollRectIconWave: {fileID: 1155738839}
   iconWave:
   - {fileID: 1385203988}
   - {fileID: 1057801124}

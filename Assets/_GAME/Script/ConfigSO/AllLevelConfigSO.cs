@@ -5,9 +5,9 @@ public class AllLevelConfigSO : ScriptableObject {
     public DataLevelConfigSO[] levelDatas;
 
     public DataLevelConfigSO GetLevelData(int level) {
-        if (level < 0 || level >= levelDatas.Length) {
+        if (level < 0) {
             return null;
         }
-        return levelDatas[level];
+        return levelDatas[level % levelDatas.Length];
     }
 }
